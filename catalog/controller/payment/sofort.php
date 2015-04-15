@@ -164,11 +164,13 @@ class ControllerPaymentsofort extends Controller {
         	}
 
         if ($targetPay->getPaidStatus() || $this->config->get('sofort_test')) {
-        	$this->updateTxid ($order_id, true);
-			$this->model_checkout_order->confirm($order_id, $order_status_id);
-        	} else {
-        	$this->updateTxid ($order_id, false, $targetPay->getErrorMessage() );
-			$this->model_checkout_order->update($order_id, 7); // Cancelled = 7
+            $this->updateTxid ($order_id, true);
+            $this->model_checkout_order->confirm($order_id, $order_status_id);
+            echo "Order updated";
+            } else {
+            echo "Not updated, error=". $targetPay->getErrorMessage();
+            // $this->updateTxid ($order_id, false, $targetPay->getErrorMessage() );
+            // $this->model_checkout_order->update($order_id, 7); // Cancelled = 7
             }
 
     	die ("45000");
