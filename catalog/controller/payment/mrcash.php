@@ -49,7 +49,7 @@ class ControllerPaymentmrcash extends Controller {
     	$sql = "INSERT INTO `".DB_PREFIX."mrcash` SET ".
         	   "`order_id`='".$this->db->escape($order_id)."', ".
         	   "`method`='".$this->db->escape($method)."', ".
-               "`mrcash_txid`='".$this->db->escape($txid)."' ON DUPLICATE KEY UPDATE `mrcash_txid`='".$this->db->escape($txid)."', mrcash_response=null";               
+               "`mrcash_txid`='".$this->db->escape($txid)."'";               
     	$this->db->query ($sql);
     	}
 
@@ -57,12 +57,12 @@ class ControllerPaymentmrcash extends Controller {
     		Get txid/order_id pair from database
     */
 
-    public function getTxid ($order_id) {
+    public function getTxid ($order_id, $txid) {
 
-    	$sql = "SELECT * FROM `".DB_PREFIX."mrcash` WHERE `order_id`='".$this->db->escape($order_id)."'";
-    	$result = $this->db->query ($sql);
+        $sql = "SELECT * FROM `".DB_PREFIX."mrcash` WHERE `order_id`='".$this->db->escape($order_id)."' AND `mrcash_txid`='".$this->db->escape($txid)."'";
+        $result = $this->db->query ($sql);
         return $result->rows[0];
-    	}
+        }
 
     /**
     		Update txid/order_id pair in database
@@ -149,7 +149,7 @@ class ControllerPaymentmrcash extends Controller {
 		$this->load->model('checkout/order');
 		$order_info = $this->model_checkout_order->getOrder($order_id);
 
-        $targetPayTx = $this->getTxid ($order_id);
+        $targetPayTx = $this->getTxid ($order_id, $_GET["trxid"]);
 
         if (!$targetPayTx) {
 			$this->log->write('Could not find TargetPay transaction data for order_id='.$order_id);
