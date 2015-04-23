@@ -149,7 +149,7 @@ class ControllerPaymentideal extends Controller {
 		$this->load->model('checkout/order');
 		$order_info = $this->model_checkout_order->getOrder($order_id);
 
-        $targetPayTx = $this->getTxid ($order_id, $_GET["trxid"]);
+        $targetPayTx = $this->getTxid ($order_id, $_POST["trxid"]);
 
         if (!$targetPayTx) {
 			$this->log->write('Could not find TargetPay transaction data for order_id='.$order_id);
@@ -168,14 +168,13 @@ class ControllerPaymentideal extends Controller {
         if ($targetPay->getPaidStatus() || $this->config->get('ideal_test')) {
         	$this->updateTxid ($order_id, true);
 			$this->model_checkout_order->confirm($order_id, $order_status_id);
-            echo "Order updated";
+            echo "Paid... ";
         	} else {
-            echo "Not updated, error=". $targetPay->getErrorMessage();
-        	// $this->updateTxid ($order_id, false, $targetPay->getErrorMessage() );
-			// $this->model_checkout_order->update($order_id, 7); // Cancelled = 7
+            echo "Not paid ". $targetPay->getErrorMessage()."... ";
             }
 
-    	die ("45000");
+        echo "(Opencart-1.x, 23-04-2015)";
+        die();        
 		}
 	}
 ?>
