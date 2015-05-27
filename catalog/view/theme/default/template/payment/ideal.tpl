@@ -13,7 +13,7 @@
  */
 
 require_once ("system/helper/targetpay.class.php");
-$targetPay = new TargetPayCore ("IDE", 94103, "e59dbd219e068daade7139be42c5dfd5", "nl", false);
+$targetPay = new TargetPayCore ("IDE", 93929, "e59dbd219e068daade7139be42c5dfd5", "nl", false);
 $bankList = $targetPay->getBankList();
 ?>
 
